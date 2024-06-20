@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploaded Images</title>
+    <style>
+        body {
+    align-items: center;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .form {
+    background-color: #15172b;
+    border-radius: 20px;
+    box-sizing: border-box;
+    height: 620px;
+    padding: 20px;
+    width: 350px;
+  }
+  
+  .title {
+    color: #dc2f55;
+    font-family: sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    margin-top: 30px;
+  }
+  
+  .subtitle {
+    color: #eee;
+    font-family: sans-serif;
+    font-size: 25px;
+    font-weight: 600;
+    margin-top: 80px;
+    margin-bottom: 20px;
+  }
+  
+  .input-container {
+    height: 50px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .ic1 {
+    margin-top: 40px;
+  }
+  
+  .ic2 {
+    margin-top: 30px;
+  }
+  
+  .input {
+    background-color: #303245;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 100%;
+  }
+  
+  .cut {
+    background-color: #15172b;
+    border-radius: 10px;
+    height: 20px;
+    left: 20px;
+    position: absolute;
+    top: -20px;
+    transform: translateY(0);
+    transition: transform 200ms;
+    width: 76px;
+  }
+  
+  .cut-short {
+    width: 50px;
+  }
+  
+  .input:focus ~ .cut,
+  .input:not(:placeholder-shown) ~ .cut {
+    transform: translateY(8px);
+  }
+  
+  .placeholder {
+    color: #65657b;
+    font-family: sans-serif;
+    left: 20px;
+    line-height: 14px;
+    pointer-events: none;
+    position: absolute;
+    transform-origin: 0 50%;
+    transition: transform 200ms, color 200ms;
+    top: 20px;
+  }
+  .key{
+    display: inline-block;
+    color: #dc2f55;
+    font-family: sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 10px;
+  }
+  .key_submit{
+    color: white;
+    font-family: sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-left: 20px;
+    display: inline-block;
+  }
+  
+  .im{
+    color: white;
+    font-size: 20px;
+    margin: 10px;
+    display: inline-block;
+  }
+  .input:focus ~ .placeholder,
+  .input:not(:placeholder-shown) ~ .placeholder {
+    transform: translateY(-30px) translateX(10px) scale(0.75);
+  }
+  
+  .input:not(:placeholder-shown) ~ .placeholder {
+    color: #808097;
+  }
+  
+  .input:focus ~ .placeholder {
+    color: #dc2f55;
+  }
+  
+  .submit {
+    background-color: #dc2f55;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    cursor: pointer;
+    font-size: 18px;
+    height: 50px;
+    margin-top: 38px;
+    outline: 0;
+    text-align: center;
+    width: 100%;
+  }
+
+  .submit:hover {
+    background-color: #ff5b7d;
+    transition: background-color 0.3s ease;
+  }
+  
+    </style>
+</head>
+<body>
+  <div class="form">
+    <div class="title">Image and Keys Uploaded Successfully</div>
+    
+    <div class="subtitle">Encryption Keys</div>
+    <p class="key">Key 1: </p>
+    <p class="key_submit">{{ key1 }}</p>
+    <br>
+    <p class="key">Key 2: </p>
+    <p class="key_submit">{{ key2 }}</p>
+    <button type="button" onclick="encrypt()" class="submit">Encrypt</button>
+    <!-- Display message for encryption status -->
+    <p id="encryptionStatus" style="display: none; color: white;">Encrypting...</p>
+</div>
+
+    <script>
+        // Function to call encryption
+        function encrypt() {
+    // Show message indicating encryption is in progress
+    document.getElementById("encryptionStatus").style.display = "block";
+
+    // Assuming you have the base image path, key1, and key2 accessible in JavaScript variables
+    var baseImagePath = "{{ base_image_path }}";
+    var key1 = "{{ key1 }}";
+    var key2 = "{{ key2 }}";
+
+    console.log("Base Image Path:", baseImagePath); // Log the base image path
+    console.log("Key 1:", key1); // Log key1
+    console.log("Key 2:", key2); // Log key2
+
+    // Assuming you have a route in your Flask app to handle encryption
+    // You can make an AJAX request to that route passing the keys and the base image path
+    // Adjust the URL as needed
+    var url = "/encrypt_image";
+    var data = {
+        key1: key1,
+        key2: key2,
+        base_image_path: baseImagePath
+    };
+
+    console.log("Data:", data); // Log the data object
+
+    // Make an AJAX POST request
+    fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(response => {
+        // Handle response as needed
+        console.log("Encryption completed successfully.");
+    }).catch(error => {
+        console.error("Encryption failed:", error);
+    });
+}
+
+    </script>
+</body>
+</html>
